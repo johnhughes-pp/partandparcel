@@ -41,7 +41,7 @@
             align-items: center;
         }
 
-        /* Dark Blue Sticky Nav - Higher Z-Index to remain clickable */
+        /* Dark Blue Sticky Nav */
         .global-nav {
             position: sticky;
             top: 0;
@@ -81,7 +81,6 @@
             scroll-margin-top: 64px;
         }
 
-        /* Section dividers respect the 2rem inset margin */
         .section-container::before {
             content: "";
             display: block;
@@ -101,7 +100,6 @@
             scroll-margin-top: 0;
         }
 
-        /* Standardized Grid with internal 2rem padding */
         .standard-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -140,6 +138,7 @@
             font-weight: 300;
         }
 
+        /* Placeholder Styles - Fixed to 3:2 Ratio */
         .placeholder-box {
             width: 100%;
             background: #f8fafc;
@@ -162,7 +161,6 @@
             transition: all 0.5s ease;
         }
 
-        /* When open, the wrapper sits flush at the top (under sticky nav) */
         body.app-state-active .module-wrapper { 
             position: fixed;
             top: 64px;
@@ -194,7 +192,6 @@
             box-shadow: 0 30px 60px -12px rgba(0,0,0,0.25);
         }
 
-        /* Modal Backdrop starts below sticky nav */
         .modal-backdrop {
             position: fixed;
             top: 64px;
@@ -376,7 +373,6 @@
             opacity: 0;
             pointer-events: none;
             color: #fff;
-            /* Entrance delay only for initial appearance opacity */
             transition: opacity 0.4s ease 0.6s, background-color 0.15s ease;
         }
 
@@ -390,7 +386,6 @@
             z-index: 120; 
         }
 
-        /* Responsive snap interaction with grey rollover shift */
         .close-btn-circle:hover {
             background-color: #4b5563;
             transition-delay: 0s; 
@@ -476,7 +471,7 @@
         <div class="content-px">
             <span class="micro-label">Case Study</span>
             <h1 class="large-headline">Unifying a 100-year-old<br>institution across ten distinct communities</h1>
-            <div class="placeholder-box h-[500px]">Main Institutional Key Visual (2400 x 1600)</div>
+            <div class="placeholder-box">Main Institutional Key Visual (2400 x 1600)</div>
         </div>
     </header>
 
@@ -512,7 +507,6 @@
         <div class="content-px">
             <span class="micro-label">Visual Identities</span>
             <div class="space-y-12">
-                <!-- Corrected visual identity structure for alignment -->
                 <div class="placeholder-box">Primary Logo (2400 x 1600)</div>
                 <div class="mt-8">
                     <p class="text-xl leading-relaxed text-slate-700 mb-8">Cohesive family of logos that unifies the organization without forcing uniformity.</p>
@@ -636,7 +630,6 @@
             <span class="micro-label">Tools</span>
             <h3 class="large-headline mb-8">Internal Systems</h3>
         </div>
-        <!-- Carousel aligns flush with Title padding via internal padding -->
         <div class="carousel-container" id="carousel-container">
             <div class="carousel-track">
                 <div class="carousel-slide"><div class="placeholder-box">Interface Asset 01</div></div>
@@ -728,7 +721,8 @@
             
             let galleryHtml = '';
             for (let i = 0; i < content.count; i++) {
-                galleryHtml += `<div class="placeholder-box mb-8 h-[600px]">Visual Module ${i+1}</div>`;
+                // Using aspect-ratio utility for consistent 3:2 modules
+                galleryHtml += `<div class="placeholder-box mb-8">Visual Module ${i+1}</div>`;
             }
             document.getElementById('content-gallery').innerHTML = galleryHtml;
             document.getElementById('content-area').scrollTop = 0;
