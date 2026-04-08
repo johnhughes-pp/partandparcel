@@ -41,7 +41,7 @@
             align-items: center;
         }
 
-        /* Dark Blue Sticky Nav */
+        /* Dark Blue Sticky Nav - Higher Z-Index to remain clickable */
         .global-nav {
             position: sticky;
             top: 0;
@@ -81,6 +81,7 @@
             scroll-margin-top: 64px;
         }
 
+        /* Section dividers respect the 2rem inset margin */
         .section-container::before {
             content: "";
             display: block;
@@ -100,6 +101,7 @@
             scroll-margin-top: 0;
         }
 
+        /* Standardized Grid with internal 2rem padding */
         .standard-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -161,6 +163,7 @@
             transition: all 0.5s ease;
         }
 
+        /* When open, the wrapper sits flush at the top (under sticky nav) */
         body.app-state-active .module-wrapper { 
             position: fixed;
             top: 64px;
@@ -192,6 +195,7 @@
             box-shadow: 0 30px 60px -12px rgba(0,0,0,0.25);
         }
 
+        /* Modal Backdrop starts below sticky nav */
         .modal-backdrop {
             position: fixed;
             top: 64px;
@@ -358,6 +362,34 @@
             padding: 0 2rem; 
         }
 
+        /* Minimal Footer Navigation */
+        .pillar-nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8rem 2rem 10rem 2rem;
+            color: #000;
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        .pillar-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .pillar-nav-link:hover {
+            opacity: 0.6;
+        }
+
+        .pillar-arrow {
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
         /* Controls */
         .nav-control {
             position: absolute;
@@ -373,6 +405,7 @@
             opacity: 0;
             pointer-events: none;
             color: #fff;
+            /* Entrance delay only for initial appearance opacity */
             transition: opacity 0.4s ease 0.6s, background-color 0.15s ease;
         }
 
@@ -386,6 +419,7 @@
             z-index: 120; 
         }
 
+        /* Responsive snap interaction with grey rollover shift */
         .close-btn-circle:hover {
             background-color: #4b5563;
             transition-delay: 0s; 
@@ -545,31 +579,31 @@
                             <div class="submenu-column">
                                 <div class="submenu-item" onclick="openSection(0)" data-idx="0">
                                     <div class="submenu-dot dot-religious"></div>
-                                    <div class="submenu-label">The Religious Institution</div>
+                                    <div class="submenu-label">Wilshire Boulevard Temple</div>
                                 </div>
                                 <div class="submenu-item" onclick="openSection(1)" data-idx="1">
                                     <div class="submenu-dot dot-center"></div>
-                                    <div class="submenu-label">Center for Youth Engagement</div>
+                                    <div class="submenu-label">The Center for Youth Engagement</div>
                                 </div>
                             </div>
                             <div class="submenu-column">
                                 <div class="submenu-item" onclick="openSection(2)" data-idx="2">
                                     <div class="submenu-dot dot-preschools"></div>
-                                    <div class="submenu-label">Preschools</div>
+                                    <div class="submenu-label">Wilshire Early Childhood Centers</div>
                                 </div>
                                 <div class="submenu-item" onclick="openSection(3)" data-idx="3">
                                     <div class="submenu-dot dot-elementary"></div>
-                                    <div class="submenu-label">Elementary Schools</div>
+                                    <div class="submenu-label">Brawerman Elementary Schools</div>
                                 </div>
                             </div>
                             <div class="submenu-column">
                                 <div class="submenu-item" onclick="openSection(4)" data-idx="4">
                                     <div class="submenu-dot dot-center"></div>
-                                    <div class="submenu-label">Camps</div>
+                                    <div class="submenu-label">Camp Hess Kramer & Gindling Hilltop Camp</div>
                                 </div>
                                 <div class="submenu-item" onclick="openSection(5)" data-idx="5">
                                     <div class="submenu-dot dot-social"></div>
-                                    <div class="submenu-label">Social & Outreach</div>
+                                    <div class="submenu-label">Karsh Social Services Center</div>
                                 </div>
                             </div>
                         </div>
@@ -579,27 +613,27 @@
                 <div id="accordion-root" class="accordion-container">
                     <div class="drawer" onclick="openSection(0)">
                         <div class="drawer-indicator dot-religious"></div>
-                        <div class="drawer-label">The Religious Institution</div>
+                        <div class="drawer-label">Wilshire Boulevard Temple</div>
                     </div>
                     <div class="drawer" onclick="openSection(1)">
                         <div class="drawer-indicator dot-center"></div>
-                        <div class="drawer-label">Center for Youth Engagement</div>
+                        <div class="drawer-label">The Center for Youth Engagement</div>
                     </div>
                     <div class="drawer" onclick="openSection(2)">
                         <div class="drawer-indicator dot-preschools"></div>
-                        <div class="drawer-label">Preschools</div>
+                        <div class="drawer-label">Wilshire Early Childhood Centers</div>
                     </div>
                     <div class="drawer" onclick="openSection(3)">
                         <div class="drawer-indicator dot-elementary"></div>
-                        <div class="drawer-label">Elementary Schools</div>
+                        <div class="drawer-label">Brawerman Elementary Schools</div>
                     </div>
                     <div class="drawer" onclick="openSection(4)">
                         <div class="drawer-indicator dot-center"></div>
-                        <div class="drawer-label">Camps</div>
+                        <div class="drawer-label">Camp Hess Kramer & Gindling Hilltop Camp</div>
                     </div>
                     <div class="drawer" onclick="openSection(5)">
                         <div class="drawer-indicator dot-social"></div>
-                        <div class="drawer-label">Social & Outreach</div>
+                        <div class="drawer-label">Karsh Social Services Center</div>
                     </div>
                 </div>
 
@@ -615,6 +649,18 @@
                             </div>
                         </div>
                         <div id="content-gallery" class="space-y-12 pb-32 gallery-container"></div>
+                        
+                        <!-- Minimal Footer Navigation with Sans-Serif Arrows -->
+                        <div class="pillar-nav-footer">
+                            <div class="pillar-nav-link" id="prev-pillar-btn">
+                                <span class="pillar-arrow">&#x1F850;</span>
+                                <span id="prev-pillar-name">Previous Name</span>
+                            </div>
+                            <div class="pillar-nav-link text-right" id="next-pillar-btn">
+                                <span id="next-pillar-name">Next Name</span>
+                                <span class="pillar-arrow">&#x1F852;</span>
+                            </div>
+                        </div>
                     </div>
                 </main>
 
@@ -673,12 +719,12 @@
 
     <script>
         const sections = [
-            { title: "The Religious Institution", h: "Spiritual Tradition", b: "Ensuring that the historic legacy of the temple is accessible to the modern digital congregant. We focused on honoring a century of spiritual tradition while pivoting toward a future-ready engagement model.", count: 17 },
-            { title: "Center for Youth Engagement", h: "Youth Empowerment", b: "A vibrant hub for leadership and social connection designed specifically for the next generation. Our challenge was to create a space that fosters growth and community.", count: 6 },
-            { title: "Preschools", h: "Early Discovery", b: "Nurturing digital gateways for families beginning their journey with WBT. The preschool identities focus on accessibility and warmth, providing a safe entry point.", count: 11 },
-            { title: "Elementary Schools", h: "Academic Excellence", b: "Comprehensive academic resources and community news for our student body. The digital framework supports complex hierarchies while remaining intuitive.", count: 21 },
-            { title: "Camps", h: "Adventure & Growth", b: "Capturing the spirit of summer through dynamic engagement platform. We utilized high-energy color palettes and kinetic pattern to reflect vitality.", count: 9 },
-            { title: "Social & Outreach", h: "Community Service", b: "Bridging our institution with local and global initiatives to foster meaningful impact. The system emphasizes clarity and transparency.", count: 8 }
+            { title: "Wilshire Boulevard Temple", h: "Spiritual Tradition", b: "Ensuring that the historic legacy of the temple is accessible to the modern digital congregant. We focused on honoring a century of spiritual tradition while pivoting toward a future-ready engagement model.", count: 17 },
+            { title: "The Center for Youth Engagement", h: "Youth Empowerment", b: "A vibrant hub for leadership and social connection designed specifically for the next generation. Our challenge was to create a space that fosters growth and community.", count: 6 },
+            { title: "Wilshire Early Childhood Centers", h: "Early Discovery", b: "Nurturing digital gateways for families beginning their journey with WBT. The preschool identities focus on accessibility and warmth, providing a safe entry point.", count: 11 },
+            { title: "Brawerman Elementary Schools", h: "Academic Excellence", b: "Comprehensive academic resources and community news for our student body. The digital framework supports complex hierarchies while remaining intuitive.", count: 21 },
+            { title: "Camp Hess Kramer & Gindling Hilltop Camp", h: "Adventure & Growth", b: "Capturing the spirit of summer through dynamic engagement platform. We utilized high-energy color palettes and kinetic pattern to reflect vitality.", count: 9 },
+            { title: "Karsh Social Services Center", h: "Community Service", b: "Bridging our institution with local and global initiatives to foster meaningful impact. The system emphasizes clarity and transparency.", count: 8 }
         ];
 
         let currentActiveSection = -1;
@@ -721,11 +767,20 @@
             
             let galleryHtml = '';
             for (let i = 0; i < content.count; i++) {
-                // Using aspect-ratio utility for consistent 3:2 modules
                 galleryHtml += `<div class="placeholder-box mb-8">Visual Module ${i+1}</div>`;
             }
             document.getElementById('content-gallery').innerHTML = galleryHtml;
             document.getElementById('content-area').scrollTop = 0;
+            
+            // Set up footer navigation names and click events
+            const prevIndex = (index - 1 + sections.length) % sections.length;
+            const nextIndex = (index + 1) % sections.length;
+            
+            document.getElementById('prev-pillar-name').innerText = sections[prevIndex].title;
+            document.getElementById('next-pillar-name').innerText = sections[nextIndex].title;
+            
+            document.getElementById('prev-pillar-btn').onclick = () => openSection(prevIndex);
+            document.getElementById('next-pillar-btn').onclick = () => openSection(nextIndex);
             
             document.getElementById('nav-container').classList.remove('header-hidden');
         }
