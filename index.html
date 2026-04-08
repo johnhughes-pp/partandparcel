@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WILSHIRE BOULEVARD TEMPLE CASE STUDY</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff; 
+            margin: 0;
+            font-weight: 300;
+            color: #000;
+        }
+
+        /* Prevent background scroll when module is active */
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* Top Bar Navigation */
+        .top-nav {
+            width: 100%;
+            height: 64px;
+            background-color: #17a2a8;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            z-index: 1001;
+        }
+
+        .nav-inner {
+            max-width: 1440px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        /* Dark Blue Sticky Nav */
+        .global-nav {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 64px;
+            background-color: #144372; 
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .global-nav-links {
+            display: flex; gap: 1.5rem;
+        }
+
+        .global-nav-links a {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #ffffff;
+            text-decoration: none;
+            opacity: 0.7; 
+            transition: opacity 0.3s ease;
+        }
+
+        .global-nav-links a:hover,
+        .global-nav-links a.active { 
+            opacity: 1; 
+        }
+
+        /* --- UPDATED UNIFIED GRID SYSTEM --- */
+        /* Containers are now full-width to allow for bleed backgrounds */
+        .section-container, .module-wrapper {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding-bottom: 10rem;
+            scroll-margin-top: 62px;
+        }
+
+        /* Pink Lines: Rules now use horizontal margin to maintain the 2rem inset */
+        .section-container::before {
+            content: "";
+            display: block;
+            border-top: 2px solid #000;
+            padding-top: 3rem;
+            margin-left: 2rem;
+            margin-right: 2rem;
+        }
+
+        header.section-container::before {
+            display: none;
+        }
+
+        header.section-container {
+            padding-top: 8rem;
+            padding-bottom: 3rem;
+            scroll-margin-top: 0;
+        }
+
+        /* Standardized Grid with internal 2rem padding for consistent alignment */
+        .standard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem; 
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        /* Utility for non-grid text alignment */
+        .content-px {
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        /* Typography Hierarchy */
+        .micro-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .large-headline {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            font-weight: 400;
+            letter-spacing: -0.04em;
+            margin-bottom: 2.5rem;
+        }
+
+        .body-copy {
+            font-size: 1rem;
+            line-height: 1.65;
+            color: #334155;
+            font-weight: 300;
+        }
+
+        .placeholder-box {
+            width: 100%;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            aspect-ratio: 3/2; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        /* Institutional Accordion Module Wrapper */
+        .module-wrapper {
+            transition: all 0.5s ease;
+        }
+
+        body.app-state-active .module-wrapper { 
+            padding-top: 0; 
+            padding-bottom: 0;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E") 16 16, pointer;
+        }
+
+        .app-shell {
+            position: relative;
+            width: 100%;
+            height: 375px; 
+            background: #f8f8f7; 
+            border: none;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            z-index: 60;
+            transition: all 0.5s cubic-bezier(0.85, 0, 0.15, 1);
+            cursor: auto; 
+        }
+
+        .app-state-active .app-shell {
+            height: calc(100vh - 64px); 
+            box-shadow: 0 30px 60px -12px rgba(0,0,0,0.25);
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 50;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E") 16 16, pointer;
+        }
+
+        .app-state-active .modal-backdrop { opacity: 1; pointer-events: auto; }
+
+        .accordion-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+        }
+
+        .drawer {
+            position: relative;
+            flex: 1 1 0;
+            width: 100%;
+            cursor: pointer;
+            overflow: hidden;
+            background: #ffffff; 
+            border-bottom: 1px solid #000; 
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 2rem; /* Matches container rules inset */
+        }
+
+        .drawer:first-child { border-top: 2px solid #000; }
+        .accordion-container .drawer:last-child { border-bottom: 2px solid #000; }
+
+        .drawer-label {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: #000; 
+            line-height: 1.2;
+            padding-left: 2.5rem; 
+            transition: opacity 0.3s ease;
+        }
+
+        .drawer-indicator {
+            position: absolute;
+            border-radius: 50%;
+            width: 0.5rem; 
+            height: 0.5rem;
+            left: 2rem; /* Aligns with rule start */
+            transition: all 0.3s ease;
+        }
+
+        /* Hide-and-Seek Nav */
+        .nav-container {
+            display: none;
+            width: 100%;
+            overflow: hidden;
+            flex-shrink: 0;
+            transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            background: #fff;
+            z-index: 100;
+        }
+
+        .app-state-active .nav-container {
+            display: block;
+            height: 100px; 
+        }
+
+        .nav-container.header-hidden {
+            height: 0 !important;
+        }
+
+        .sticky-header-wrap {
+            width: 100%;
+            background: #fff;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .header-hidden .sticky-header-wrap {
+            transform: translateY(-100%);
+        }
+
+        .app-state-active .accordion-container {
+            display: none; 
+        }
+
+        /* Open Pillar Nav Grid Alignment */
+        .expanded-grid-header {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem; 
+            gap: 2rem;
+            justify-items: start;
+        }
+
+        .submenu-column {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem; 
+            width: 100%;
+        }
+
+        .submenu-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+            width: 100%;
+        }
+
+        .submenu-dot {
+            width: 0.4rem; 
+            height: 0.4rem;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-right: 1.25rem;
+        }
+
+        .submenu-label {
+            font-size: 1rem; 
+            font-weight: 300;
+            white-space: nowrap;
+            line-height: 1.2;
+        }
+
+        .submenu-item:not(.active) {
+            opacity: 0.45;
+        }
+
+        /* Content Area Padding */
+        .content-area {
+            flex: 1;
+            background: #f8f8f7; 
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 10;
+            cursor: auto; 
+        }
+
+        .app-state-active .content-area { 
+            pointer-events: auto; 
+            padding-top: 4rem; 
+        }
+
+        /* Open Pillar Header Alignment - Padding added to layouts directly */
+        .intro-text-layout {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 5rem;
+            align-items: start;
+            padding: 0 2rem; 
+        }
+
+        .headline-span-all {
+            grid-column: 1 / -1;
+            margin-bottom: 0.5rem !important; 
+        }
+
+        .col-span-subhead { grid-column: 1; }
+        .col-span-body { grid-column: 2 / span 2; }
+
+        .gallery-container { padding: 0 2rem; }
+
+        /* Nav Controls */
+        .nav-control {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            background: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 110;
+            opacity: 0;
+            pointer-events: none;
+            color: #fff;
+            transition: opacity 0.4s ease, transform 0.2s ease;
+        }
+
+        .app-state-active .nav-control { opacity: 1; pointer-events: auto; transition-delay: 0.6s; }
+        .nav-control:hover { transform: scale(1.1); }
+
+        /* Close Button Moved to align with padding */
+        .close-btn-circle { 
+            top: 1.625rem; 
+            right: 2rem; 
+            bottom: auto;
+            left: auto;
+            z-index: 120; 
+        }
+
+        .dot-religious { background-color: #144372; }
+        .dot-center { background-color: #00A1C7; }
+        .dot-preschools { background-color: #50B848; }
+        .dot-elementary { background-color: #0074D9; }
+        .dot-camps { background-color: #005A59; }
+        .dot-social { background-color: #04A199; }
+
+        /* Tools Carousel */
+        .carousel-container { 
+            width: 100%;
+            overflow-x: auto; 
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none; 
+            margin-top: 2rem;
+            padding: 0 2rem;
+        }
+        .carousel-container::-webkit-scrollbar { display: none; }
+        .carousel-track { display: flex; width: max-content; }
+        .carousel-slide { 
+            width: 600px; 
+            flex-shrink: 0;
+            border-right: 1px dashed #000; 
+            scroll-snap-align: start;
+        }
+        .carousel-slide:last-child { border-right: none; }
+        .slide-indicator-wrapper { margin-top: 1.5rem; width: 100%; padding: 0 2rem; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; border: 1px solid #000; transition: background 0.3s ease; }
+        .dot.active { background: #000; }
+
+        /* General Dividers */
+        #tools::before, #impact::before, footer::before {
+            content: "";
+            display: block;
+            border-top: 2px solid #000;
+            padding-top: 3rem;
+            margin-left: 2rem;
+            margin-right: 2rem;
+        }
+
+        footer { 
+            padding-bottom: 3rem; 
+            background: #fff; 
+            text-align: left; 
+            font-size: 0.6rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.3em; 
+        }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #000; }
+    </style>
+</head>
+<body id="page-body">
+
+    <div class="modal-backdrop" id="modal-backdrop" onclick="resetView()"></div>
+
+    <nav class="top-nav">
+        <div class="nav-inner">
+            <span class="text-[0.65rem] uppercase tracking-[0.2em] font-semibold text-white mr-12">PART AND PARCEL</span>
+            <div class="flex gap-8">
+                <a href="#" class="text-[0.65rem] uppercase tracking-[0.2em] font-semibold text-white hover:opacity-70 transition-opacity">Work</a>
+                <a href="#" class="text-[0.65rem] uppercase tracking-[0.2em] font-semibold text-white hover:opacity-70 transition-opacity">About</a>
+                <a href="#" class="text-[0.65rem] uppercase tracking-[0.2em] font-semibold text-white hover:opacity-70 transition-opacity">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <nav class="global-nav">
+        <div class="nav-inner">
+            <span class="text-[0.65rem] uppercase tracking-[0.2em] font-semibold text-white mr-12 opacity-100">WILSHIRE BOULEVARD TEMPLE</span>
+            <div class="global-nav-links" id="global-nav-links">
+                <a href="#the-ask">The Ask</a>
+                <a href="#strategic-foundation">Strategic Foundation</a>
+                <a href="#visual-identities">Visual Identities</a>
+                <a href="#applications">Applications</a>
+                <a href="#tools">Tools</a>
+                <a href="#impact">Impact</a>
+            </div>
+        </div>
+    </nav>
+
+    <header id="top" class="section-container">
+        <div class="content-px">
+            <span class="micro-label">Case Study</span>
+            <h1 class="large-headline">Unifying a 100-year-old<br>institution across ten distinct communities</h1>
+            <div class="placeholder-box h-[500px]">Main Institutional Key Visual (2400 x 1600)</div>
+        </div>
+    </header>
+
+    <section id="the-ask" class="section-container">
+        <div class="content-px">
+            <span class="micro-label">The Ask</span>
+        </div>
+        <div class="standard-grid">
+            <div class="col-span-2">
+                <p class="text-2xl leading-relaxed font-light text-slate-800">
+                    Wilshire Boulevard Temple required a comprehensive digital transformation. Our mandate was to unify a fragmented ecosystem of six disparate pillars into a single, cohesive design system.
+                </p>
+            </div>
+            <div>
+                <p class="body-copy">The objective was to create a framework that honors a century of spiritual tradition while pivoting toward modern engagement.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="strategic-foundation" class="section-container">
+        <div class="content-px">
+            <span class="micro-label">Strategic Foundation</span>
+            <h2 class="large-headline mb-4">Building a brand that inspires, unifies, and endures.</h2>
+        </div>
+        <div class="standard-grid">
+            <div><h4 class="column-header">inspiring the world</h4><p class="body-copy">We start by identifying the heart of your unique offering.</p></div>
+            <div><h4 class="column-header">unifying brands</h4><p class="body-copy">Through strategic design, we help everyone know and love what you do.</p></div>
+            <div><h4 class="column-header">enduring relevance</h4><p class="body-copy">Bold ideas of today become icons of tomorrow.</p></div>
+        </div>
+    </section>
+
+    <section id="visual-identities" class="section-container">
+        <div class="content-px">
+            <span class="micro-label">Visual Identities</span>
+            <div class="space-y-12">
+                <div class="placeholder-box">Primary Logo (2400 x 1600)</div>
+                <div>
+                    <p class="text-xl leading-relaxed text-slate-700 mb-8">Cohesive family of logos that unifies the organization without forcing uniformity.</p>
+                    <div class="placeholder-box">Visual Identity System (2400 x 1600)</div>
+                    <p class="mt-4 text-xs text-slate-400">The visual system utilize a monochromatic palette and custom typography to bridge historic gravitas with contemporary minimalism.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="applications" class="section-container">
+        <div class="content-px">
+            <span class="micro-label">Applications</span>
+            <h2 class="large-headline headline-span-all">Institutional Pillars.</h2>
+        </div>
+        <div class="standard-grid mb-8">
+            <div class="col-span-1">
+                <h4 class="text-2xl font-light text-slate-800 leading-snug">
+                    A unified design system that creates cohesion across the organization.
+                </h4>
+            </div>
+            <div class="col-span-2">
+                <p class="body-copy">
+                    This phase demonstrates the brand's integrity by showing how the identity maintains a "thread that connects everything" while achieving necessary differentiation for each unit. Each pillar utilizes a specific color logic and typographical weighting to express its unique community focus.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="module-wrapper" id="pillars-module-wrapper" onclick="resetView()">
+        <div class="app-shell" id="app-shell" onclick="event.stopPropagation()">
+            
+            <div class="nav-container" id="nav-container">
+                <div class="sticky-header-wrap" id="smart-nav">
+                    <div class="expanded-grid-header">
+                        <div class="submenu-column">
+                            <div class="submenu-item" onclick="openSection(0)" data-idx="0">
+                                <div class="submenu-dot dot-religious"></div>
+                                <div class="submenu-label">The Religious Institution</div>
+                            </div>
+                            <div class="submenu-item" onclick="openSection(1)" data-idx="1">
+                                <div class="submenu-dot dot-center"></div>
+                                <div class="submenu-label">Center for Youth Engagement</div>
+                            </div>
+                        </div>
+                        <div class="submenu-column">
+                            <div class="submenu-item" onclick="openSection(2)" data-idx="2">
+                                <div class="submenu-dot dot-preschools"></div>
+                                <div class="submenu-label">Preschools</div>
+                            </div>
+                            <div class="submenu-item" onclick="openSection(3)" data-idx="3">
+                                <div class="submenu-dot dot-elementary"></div>
+                                <div class="submenu-label">Elementary Schools</div>
+                            </div>
+                        </div>
+                        <div class="submenu-column">
+                            <div class="submenu-item" onclick="openSection(4)" data-idx="4">
+                                <div class="submenu-dot dot-center"></div>
+                                <div class="submenu-label">Camps</div>
+                            </div>
+                            <div class="submenu-item" onclick="openSection(5)" data-idx="5">
+                                <div class="submenu-dot dot-social"></div>
+                                <div class="submenu-label">Social & Outreach</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="accordion-root" class="accordion-container">
+                <div class="drawer" onclick="openSection(0)">
+                    <div class="drawer-indicator dot-religious"></div>
+                    <div class="drawer-label">The Religious Institution</div>
+                </div>
+                <div class="drawer" onclick="openSection(1)">
+                    <div class="drawer-indicator dot-center"></div>
+                    <div class="drawer-label">Center for Youth Engagement</div>
+                </div>
+                <div class="drawer" onclick="openSection(2)">
+                    <div class="drawer-indicator dot-preschools"></div>
+                    <div class="drawer-label">Preschools</div>
+                </div>
+                <div class="drawer" onclick="openSection(3)">
+                    <div class="drawer-indicator dot-elementary"></div>
+                    <div class="drawer-label">Elementary Schools</div>
+                </div>
+                <div class="drawer" onclick="openSection(4)">
+                    <div class="drawer-indicator dot-center"></div>
+                    <div class="drawer-label">Camps</div>
+                </div>
+                <div class="drawer" onclick="openSection(5)">
+                    <div class="drawer-indicator dot-social"></div>
+                    <div class="drawer-label">Social & Outreach</div>
+                </div>
+            </div>
+
+            <main id="content-area" class="content-area custom-scrollbar">
+                <div class="max-w-[1440px] mx-auto px-0">
+                    <div class="intro-text-layout">
+                        <h1 id="scroll-content-title" class="large-headline headline-span-all">Pillar Title</h1>
+                        <div class="col-span-subhead">
+                            <h4 id="scroll-content-subhead" class="text-2xl font-light">Subhead</h4>
+                        </div>
+                        <div class="col-span-body">
+                            <p id="scroll-content-body" class="body-copy">Description</p>
+                        </div>
+                    </div>
+                    <div id="content-gallery" class="space-y-12 pb-32 gallery-container"></div>
+                </div>
+            </main>
+
+            <div onclick="resetView()" class="nav-control close-btn-circle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </div>
+        </div>
+    </div>
+
+    <section id="tools" class="section-container">
+        <div class="content-px">
+            <span class="micro-label">Tools</span>
+            <h3 class="large-headline mb-8">Internal Systems</h3>
+        </div>
+        <div class="carousel-container" id="carousel-container">
+            <div class="carousel-track">
+                <div class="carousel-slide"><div class="placeholder-box">Interface Asset 01</div></div>
+                <div class="carousel-slide"><div class="placeholder-box">Interface Asset 02</div></div>
+                <div class="carousel-slide"><div class="placeholder-box">Interface Asset 03</div></div>
+                <div class="carousel-slide"><div class="placeholder-box">Interface Asset 04</div></div>
+                <div class="carousel-slide"><div class="placeholder-box">Interface Asset 05</div></div>
+            </div>
+        </div>
+        <div class="slide-indicator-wrapper">
+            <div class="flex gap-4" id="dot-container">
+                <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="impact" class="section-container">
+        <div class="content-px">
+            <span class="micro-label">Impact</span>
+            <h2 class="large-headline">Redefining Community Connection.</h2>
+        </div>
+        <div class="standard-grid">
+            <div>
+                <h4 class="column-header">digital growth</h4>
+                <p class="body-copy">Following the relaunch by Part and Parcel, the institution saw a 40% increase in engagement within the first quarter.</p>
+            </div>
+            <div>
+                <h4 class="column-header">user retention</h4>
+                <p class="body-copy">The unified navigation and structural architecture reduced bounce rates by 25% on the main institutional landing page.</p>
+            </div>
+            <div>
+                <h4 class="column-header">operational scale</h4>
+                <p class="body-copy">Coherence has been established across four physical campuses through a singular digital design system.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="section-container">
+        <div class="text-xs uppercase tracking-widest content-px">Wilshire Boulevard Temple — Case Study 2024 — Part and Parcel</div>
+    </footer>
+
+    <script>
+        const sections = [
+            { title: "The Religious Institution", h: "Spiritual Tradition", b: "Ensuring that the historic legacy of the temple is accessible to the modern digital congregant. We focused on honoring a century of spiritual tradition while pivoting toward a future-ready engagement model, ensuring every interaction felt like a natural extension of the sanctuary.", count: 17 },
+            { title: "Center for Youth Engagement", h: "Youth Empowerment", b: "A vibrant hub for leadership and social connection designed specifically for the next generation. Our challenge was to create a space that fosters growth and community through dynamic interaction and modern interface design.", count: 6 },
+            { title: "Preschools", h: "Early Discovery", b: "Nurturing digital gateways for families beginning their journey with WBT. The preschool identities focus on accessibility and warmth, providing a safe, engaging entry point into the institutional ecosystem.", count: 11 },
+            { title: "Elementary Schools", h: "Academic Excellence", b: "Comprehensive academic resources and community news for our student body. The digital framework supports complex hierarchies while remaining intuitive for users of all ages.", count: 21 },
+            { title: "Camps", h: "Adventure & Growth", b: "Capturing the spirit of summer through dynamic engagement platform. We utilized high-energy color palettes and kinetic pattern to reflect the vitality of the physical camp environment.", count: 9 },
+            { title: "Social & Outreach", h: "Community Service", b: "Bridging our institution with local and global initiatives to foster meaningful impact. The system emphasizes clarity and transparency, enabling congregants to easily find and join opportunities.", count: 8 }
+        ];
+
+        let currentActiveSection = -1;
+        let lastScrollTop = 0;
+
+        // Global Nav Scroll Spy
+        const navLinks = document.querySelectorAll('.global-nav-links a');
+        const observerOptions = { root: null, rootMargin: '-65px 0px -70% 0px', threshold: 0 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    if (!id) return;
+                    navLinks.forEach(link => {
+                        if (link.getAttribute('href') === `#${id}`) link.classList.add('active');
+                        else link.classList.remove('active');
+                    });
+                }
+            });
+        }, observerOptions);
+        document.querySelectorAll('section[id], header[id]').forEach(section => observer.observe(section));
+
+        function openSection(index) {
+            currentActiveSection = index;
+            const shell = document.getElementById('app-shell');
+            const pageBody = document.getElementById('page-body');
+            const isInitialOpen = !pageBody.classList.contains('app-state-active');
+            
+            pageBody.classList.add('app-state-active', 'modal-open');
+
+            if (isInitialOpen) {
+                const shellRect = shell.getBoundingClientRect();
+                const absoluteShellTop = window.pageYOffset + shellRect.top;
+                const targetY = absoluteShellTop - 64; 
+                window.scrollTo({ top: targetY, behavior: 'smooth' });
+            }
+
+            const menuItems = document.querySelectorAll('.submenu-item');
+            menuItems.forEach((item) => {
+                if (parseInt(item.getAttribute('data-idx')) === index) item.classList.add('active');
+                else item.classList.remove('active');
+            });
+            
+            const content = sections[index];
+            document.getElementById('scroll-content-title').innerText = content.title;
+            document.getElementById('scroll-content-subhead').innerText = content.h;
+            document.getElementById('scroll-content-body').innerText = content.b;
+            
+            let galleryHtml = '';
+            for (let i = 0; i < content.count; i++) {
+                galleryHtml += `<div class="placeholder-box mb-8 h-[600px]">Visual Module ${i+1}</div>`;
+            }
+            document.getElementById('content-gallery').innerHTML = galleryHtml;
+            document.getElementById('content-area').scrollTop = 0;
+            
+            document.getElementById('nav-container').classList.remove('header-hidden');
+        }
+
+        function navigateSection(direction) {
+            if (currentActiveSection === -1) return;
+            let nextIndex = (currentActiveSection + direction + sections.length) % sections.length;
+            openSection(nextIndex);
+        }
+
+        function resetView() {
+            currentActiveSection = -1;
+            document.getElementById('page-body').classList.remove('app-state-active', 'modal-open');
+        }
+
+        const contentArea = document.getElementById('content-area');
+        const navContainer = document.getElementById('nav-container');
+
+        contentArea.addEventListener('scroll', () => {
+            let st = contentArea.scrollTop;
+            if (st > lastScrollTop && st > 40) {
+                navContainer.classList.add('header-hidden');
+            } else if (st < lastScrollTop) {
+                navContainer.classList.remove('header-hidden');
+            }
+            lastScrollTop = st <= 0 ? 0 : st;
+        }, { passive: true });
+
+        const carousel = document.getElementById('carousel-container');
+        const dots = document.querySelectorAll('.dot');
+        const slideWidth = 600;
+
+        if (carousel) {
+            carousel.addEventListener('scroll', () => {
+                const scrollLeft = carousel.scrollLeft;
+                const activeIndex = Math.round(scrollLeft / slideWidth);
+                dots.forEach((dot, i) => i === activeIndex ? dot.classList.add('active') : dot.classList.remove('active'));
+            });
+        }
+    </script>
+</body>
+</html>
