@@ -41,7 +41,7 @@
             align-items: center;
         }
 
-        /* Dark Blue Sticky Nav */
+        /* Dark Blue Sticky Nav - Higher Z-Index to remain clickable */
         .global-nav {
             position: sticky;
             top: 0;
@@ -51,7 +51,7 @@
             color: #ffffff;
             display: flex;
             align-items: center;
-            z-index: 1000;
+            z-index: 2000; 
         }
 
         .global-nav-links {
@@ -73,16 +73,15 @@
             opacity: 1; 
         }
 
-        /* --- UPDATED UNIFIED GRID SYSTEM --- */
-        /* Containers are now full-width to allow for bleed backgrounds */
-        .section-container, .module-wrapper {
+        /* --- UNIFIED GRID SYSTEM --- */
+        .section-container {
             max-width: 1440px;
             margin: 0 auto;
             padding-bottom: 10rem;
-            scroll-margin-top: 62px;
+            scroll-margin-top: 64px;
         }
 
-        /* Pink Lines: Rules now use horizontal margin to maintain the 2rem inset */
+        /* Section dividers respect the 2rem inset margin */
         .section-container::before {
             content: "";
             display: block;
@@ -102,7 +101,7 @@
             scroll-margin-top: 0;
         }
 
-        /* Standardized Grid with internal 2rem padding for consistent alignment */
+        /* Standardized Grid with internal 2rem padding */
         .standard-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -111,13 +110,12 @@
             padding-right: 2rem;
         }
 
-        /* Utility for non-grid text alignment */
         .content-px {
             padding-left: 2rem;
             padding-right: 2rem;
         }
 
-        /* Typography Hierarchy */
+        /* Typography */
         .micro-label {
             font-size: 0.7rem;
             font-weight: 600;
@@ -156,14 +154,25 @@
             letter-spacing: 0.2em;
         }
 
-        /* Institutional Accordion Module Wrapper */
+        /* Institutional Accordion Logic */
         .module-wrapper {
+            margin-top: 4rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
             transition: all 0.5s ease;
         }
 
+        /* When open, the wrapper sits flush at the top (under sticky nav) */
         body.app-state-active .module-wrapper { 
-            padding-top: 0; 
-            padding-bottom: 0;
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1500;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 2rem;
             cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E") 16 16, pointer;
         }
 
@@ -176,22 +185,25 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            z-index: 60;
             transition: all 0.5s cubic-bezier(0.85, 0, 0.15, 1);
             cursor: auto; 
         }
 
         .app-state-active .app-shell {
-            height: calc(100vh - 64px); 
+            height: 100%; 
             box-shadow: 0 30px 60px -12px rgba(0,0,0,0.25);
         }
 
+        /* Modal Backdrop starts below sticky nav */
         .modal-backdrop {
             position: fixed;
-            inset: 0;
+            top: 64px;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(4px);
-            z-index: 50;
+            z-index: 1400;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.6s ease;
@@ -218,7 +230,7 @@
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            padding: 0 2rem; /* Matches container rules inset */
+            padding: 0; 
         }
 
         .drawer:first-child { border-top: 2px solid #000; }
@@ -238,7 +250,7 @@
             border-radius: 50%;
             width: 0.5rem; 
             height: 0.5rem;
-            left: 2rem; /* Aligns with rule start */
+            left: 0; 
             transition: all 0.3s ease;
         }
 
@@ -258,9 +270,7 @@
             height: 100px; 
         }
 
-        .nav-container.header-hidden {
-            height: 0 !important;
-        }
+        .nav-container.header-hidden { height: 0 !important; }
 
         .sticky-header-wrap {
             width: 100%;
@@ -268,15 +278,10 @@
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .header-hidden .sticky-header-wrap {
-            transform: translateY(-100%);
-        }
+        .header-hidden .sticky-header-wrap { transform: translateY(-100%); }
 
-        .app-state-active .accordion-container {
-            display: none; 
-        }
+        .app-state-active .accordion-container { display: none; }
 
-        /* Open Pillar Nav Grid Alignment */
         .expanded-grid-header {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -317,11 +322,9 @@
             line-height: 1.2;
         }
 
-        .submenu-item:not(.active) {
-            opacity: 0.45;
-        }
+        .submenu-item:not(.active) { opacity: 0.45; }
 
-        /* Content Area Padding */
+        /* Content Area */
         .content-area {
             flex: 1;
             background: #f8f8f7; 
@@ -337,7 +340,6 @@
             padding-top: 4rem; 
         }
 
-        /* Open Pillar Header Alignment - Padding added to layouts directly */
         .intro-text-layout {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -355,9 +357,11 @@
         .col-span-subhead { grid-column: 1; }
         .col-span-body { grid-column: 2 / span 2; }
 
-        .gallery-container { padding: 0 2rem; }
+        .gallery-container {
+            padding: 0 2rem; 
+        }
 
-        /* Nav Controls */
+        /* Controls */
         .nav-control {
             position: absolute;
             width: 48px;
@@ -372,19 +376,24 @@
             opacity: 0;
             pointer-events: none;
             color: #fff;
-            transition: opacity 0.4s ease, transform 0.2s ease;
+            /* Entrance delay only for opacity */
+            transition: opacity 0.4s ease 0.6s, background-color 0.15s ease;
         }
 
-        .app-state-active .nav-control { opacity: 1; pointer-events: auto; transition-delay: 0.6s; }
-        .nav-control:hover { transform: scale(1.1); }
+        .app-state-active .nav-control { opacity: 1; pointer-events: auto; }
 
-        /* Close Button Moved to align with padding */
         .close-btn-circle { 
             top: 1.625rem; 
             right: 2rem; 
             bottom: auto;
             left: auto;
             z-index: 120; 
+        }
+
+        /* Clean rollover effect: color shift with no delay or scale animation */
+        .close-btn-circle:hover {
+            background-color: #4b5563;
+            transition-delay: 0s; /* Overrides entrance delay for snappy response */
         }
 
         .dot-religious { background-color: #144372; }
@@ -394,7 +403,7 @@
         .dot-camps { background-color: #005A59; }
         .dot-social { background-color: #04A199; }
 
-        /* Tools Carousel */
+        /* Tools Slider */
         .carousel-container { 
             width: 100%;
             overflow-x: auto; 
@@ -405,18 +414,13 @@
         }
         .carousel-container::-webkit-scrollbar { display: none; }
         .carousel-track { display: flex; width: max-content; }
-        .carousel-slide { 
-            width: 600px; 
-            flex-shrink: 0;
-            border-right: 1px dashed #000; 
-            scroll-snap-align: start;
-        }
+        .carousel-slide { width: 600px; flex-shrink: 0; border-right: 1px dashed #000; scroll-snap-align: start; }
         .carousel-slide:last-child { border-right: none; }
         .slide-indicator-wrapper { margin-top: 1.5rem; width: 100%; padding: 0 2rem; }
         .dot { width: 8px; height: 8px; border-radius: 50%; border: 1px solid #000; transition: background 0.3s ease; }
         .dot.active { background: #000; }
 
-        /* General Dividers */
+        /* Dividers */
         #tools::before, #impact::before, footer::before {
             content: "";
             display: block;
@@ -458,12 +462,12 @@
         <div class="nav-inner">
             <span class="text-[0.65rem] uppercase tracking-[0.2em] font-semibold text-white mr-12 opacity-100">WILSHIRE BOULEVARD TEMPLE</span>
             <div class="global-nav-links" id="global-nav-links">
-                <a href="#the-ask">The Ask</a>
-                <a href="#strategic-foundation">Strategic Foundation</a>
-                <a href="#visual-identities">Visual Identities</a>
-                <a href="#applications">Applications</a>
-                <a href="#tools">Tools</a>
-                <a href="#impact">Impact</a>
+                <a href="#the-ask" onclick="resetView()">The Ask</a>
+                <a href="#strategic-foundation" onclick="resetView()">Strategic Foundation</a>
+                <a href="#visual-identities" onclick="resetView()">Visual Identities</a>
+                <a href="#applications" onclick="resetView()">Applications</a>
+                <a href="#tools" onclick="resetView()">Tools</a>
+                <a href="#impact" onclick="resetView()">Impact</a>
             </div>
         </div>
     </nav>
@@ -508,8 +512,8 @@
         <div class="content-px">
             <span class="micro-label">Visual Identities</span>
             <div class="space-y-12">
-                <div class="placeholder-box">Primary Logo (2400 x 1600)</div>
-                <div>
+                <div class="placeholder-box px-8">Primary Logo (2400 x 1600)</div>
+                <div class="content-px">
                     <p class="text-xl leading-relaxed text-slate-700 mb-8">Cohesive family of logos that unifies the organization without forcing uniformity.</p>
                     <div class="placeholder-box">Visual Identity System (2400 x 1600)</div>
                     <p class="mt-4 text-xs text-slate-400">The visual system utilize a monochromatic palette and custom typography to bridge historic gravitas with contemporary minimalism.</p>
@@ -518,6 +522,7 @@
         </div>
     </section>
 
+    <!-- APPLICATIONS -->
     <section id="applications" class="section-container">
         <div class="content-px">
             <span class="micro-label">Applications</span>
@@ -535,95 +540,95 @@
                 </p>
             </div>
         </div>
-    </section>
 
-    <div class="module-wrapper" id="pillars-module-wrapper" onclick="resetView()">
-        <div class="app-shell" id="app-shell" onclick="event.stopPropagation()">
-            
-            <div class="nav-container" id="nav-container">
-                <div class="sticky-header-wrap" id="smart-nav">
-                    <div class="expanded-grid-header">
-                        <div class="submenu-column">
-                            <div class="submenu-item" onclick="openSection(0)" data-idx="0">
-                                <div class="submenu-dot dot-religious"></div>
-                                <div class="submenu-label">The Religious Institution</div>
+        <div class="module-wrapper" id="pillars-module-wrapper" onclick="resetView()">
+            <div class="app-shell" id="app-shell" onclick="event.stopPropagation()">
+                
+                <div class="nav-container" id="nav-container">
+                    <div class="sticky-header-wrap" id="smart-nav">
+                        <div class="expanded-grid-header">
+                            <div class="submenu-column">
+                                <div class="submenu-item" onclick="openSection(0)" data-idx="0">
+                                    <div class="submenu-dot dot-religious"></div>
+                                    <div class="submenu-label">The Religious Institution</div>
+                                </div>
+                                <div class="submenu-item" onclick="openSection(1)" data-idx="1">
+                                    <div class="submenu-dot dot-center"></div>
+                                    <div class="submenu-label">Center for Youth Engagement</div>
+                                </div>
                             </div>
-                            <div class="submenu-item" onclick="openSection(1)" data-idx="1">
-                                <div class="submenu-dot dot-center"></div>
-                                <div class="submenu-label">Center for Youth Engagement</div>
+                            <div class="submenu-column">
+                                <div class="submenu-item" onclick="openSection(2)" data-idx="2">
+                                    <div class="submenu-dot dot-preschools"></div>
+                                    <div class="submenu-label">Preschools</div>
+                                </div>
+                                <div class="submenu-item" onclick="openSection(3)" data-idx="3">
+                                    <div class="submenu-dot dot-elementary"></div>
+                                    <div class="submenu-label">Elementary Schools</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="submenu-column">
-                            <div class="submenu-item" onclick="openSection(2)" data-idx="2">
-                                <div class="submenu-dot dot-preschools"></div>
-                                <div class="submenu-label">Preschools</div>
-                            </div>
-                            <div class="submenu-item" onclick="openSection(3)" data-idx="3">
-                                <div class="submenu-dot dot-elementary"></div>
-                                <div class="submenu-label">Elementary Schools</div>
-                            </div>
-                        </div>
-                        <div class="submenu-column">
-                            <div class="submenu-item" onclick="openSection(4)" data-idx="4">
-                                <div class="submenu-dot dot-center"></div>
-                                <div class="submenu-label">Camps</div>
-                            </div>
-                            <div class="submenu-item" onclick="openSection(5)" data-idx="5">
-                                <div class="submenu-dot dot-social"></div>
-                                <div class="submenu-label">Social & Outreach</div>
+                            <div class="submenu-column">
+                                <div class="submenu-item" onclick="openSection(4)" data-idx="4">
+                                    <div class="submenu-dot dot-center"></div>
+                                    <div class="submenu-label">Camps</div>
+                                </div>
+                                <div class="submenu-item" onclick="openSection(5)" data-idx="5">
+                                    <div class="submenu-dot dot-social"></div>
+                                    <div class="submenu-label">Social & Outreach</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div id="accordion-root" class="accordion-container">
-                <div class="drawer" onclick="openSection(0)">
-                    <div class="drawer-indicator dot-religious"></div>
-                    <div class="drawer-label">The Religious Institution</div>
-                </div>
-                <div class="drawer" onclick="openSection(1)">
-                    <div class="drawer-indicator dot-center"></div>
-                    <div class="drawer-label">Center for Youth Engagement</div>
-                </div>
-                <div class="drawer" onclick="openSection(2)">
-                    <div class="drawer-indicator dot-preschools"></div>
-                    <div class="drawer-label">Preschools</div>
-                </div>
-                <div class="drawer" onclick="openSection(3)">
-                    <div class="drawer-indicator dot-elementary"></div>
-                    <div class="drawer-label">Elementary Schools</div>
-                </div>
-                <div class="drawer" onclick="openSection(4)">
-                    <div class="drawer-indicator dot-center"></div>
-                    <div class="drawer-label">Camps</div>
-                </div>
-                <div class="drawer" onclick="openSection(5)">
-                    <div class="drawer-indicator dot-social"></div>
-                    <div class="drawer-label">Social & Outreach</div>
-                </div>
-            </div>
-
-            <main id="content-area" class="content-area custom-scrollbar">
-                <div class="max-w-[1440px] mx-auto px-0">
-                    <div class="intro-text-layout">
-                        <h1 id="scroll-content-title" class="large-headline headline-span-all">Pillar Title</h1>
-                        <div class="col-span-subhead">
-                            <h4 id="scroll-content-subhead" class="text-2xl font-light">Subhead</h4>
-                        </div>
-                        <div class="col-span-body">
-                            <p id="scroll-content-body" class="body-copy">Description</p>
-                        </div>
+                <div id="accordion-root" class="accordion-container">
+                    <div class="drawer" onclick="openSection(0)">
+                        <div class="drawer-indicator dot-religious"></div>
+                        <div class="drawer-label">The Religious Institution</div>
                     </div>
-                    <div id="content-gallery" class="space-y-12 pb-32 gallery-container"></div>
+                    <div class="drawer" onclick="openSection(1)">
+                        <div class="drawer-indicator dot-center"></div>
+                        <div class="drawer-label">Center for Youth Engagement</div>
+                    </div>
+                    <div class="drawer" onclick="openSection(2)">
+                        <div class="drawer-indicator dot-preschools"></div>
+                        <div class="drawer-label">Preschools</div>
+                    </div>
+                    <div class="drawer" onclick="openSection(3)">
+                        <div class="drawer-indicator dot-elementary"></div>
+                        <div class="drawer-label">Elementary Schools</div>
+                    </div>
+                    <div class="drawer" onclick="openSection(4)">
+                        <div class="drawer-indicator dot-center"></div>
+                        <div class="drawer-label">Camps</div>
+                    </div>
+                    <div class="drawer" onclick="openSection(5)">
+                        <div class="drawer-indicator dot-social"></div>
+                        <div class="drawer-label">Social & Outreach</div>
+                    </div>
                 </div>
-            </main>
 
-            <div onclick="resetView()" class="nav-control close-btn-circle">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                <main id="content-area" class="content-area custom-scrollbar">
+                    <div class="max-w-[1440px] mx-auto px-0">
+                        <div class="intro-text-layout">
+                            <h1 id="scroll-content-title" class="large-headline headline-span-all">Pillar Title</h1>
+                            <div class="col-span-subhead">
+                                <h4 id="scroll-content-subhead" class="text-2xl font-light">Subhead</h4>
+                            </div>
+                            <div class="col-span-body">
+                                <p id="scroll-content-body" class="body-copy">Description</p>
+                            </div>
+                        </div>
+                        <div id="content-gallery" class="space-y-12 pb-32 gallery-container"></div>
+                    </div>
+                </main>
+
+                <div onclick="resetView()" class="nav-control close-btn-circle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
     <section id="tools" class="section-container">
         <div class="content-px">
@@ -673,12 +678,12 @@
 
     <script>
         const sections = [
-            { title: "The Religious Institution", h: "Spiritual Tradition", b: "Ensuring that the historic legacy of the temple is accessible to the modern digital congregant. We focused on honoring a century of spiritual tradition while pivoting toward a future-ready engagement model, ensuring every interaction felt like a natural extension of the sanctuary.", count: 17 },
-            { title: "Center for Youth Engagement", h: "Youth Empowerment", b: "A vibrant hub for leadership and social connection designed specifically for the next generation. Our challenge was to create a space that fosters growth and community through dynamic interaction and modern interface design.", count: 6 },
-            { title: "Preschools", h: "Early Discovery", b: "Nurturing digital gateways for families beginning their journey with WBT. The preschool identities focus on accessibility and warmth, providing a safe, engaging entry point into the institutional ecosystem.", count: 11 },
-            { title: "Elementary Schools", h: "Academic Excellence", b: "Comprehensive academic resources and community news for our student body. The digital framework supports complex hierarchies while remaining intuitive for users of all ages.", count: 21 },
-            { title: "Camps", h: "Adventure & Growth", b: "Capturing the spirit of summer through dynamic engagement platform. We utilized high-energy color palettes and kinetic pattern to reflect the vitality of the physical camp environment.", count: 9 },
-            { title: "Social & Outreach", h: "Community Service", b: "Bridging our institution with local and global initiatives to foster meaningful impact. The system emphasizes clarity and transparency, enabling congregants to easily find and join opportunities.", count: 8 }
+            { title: "The Religious Institution", h: "Spiritual Tradition", b: "Ensuring that the historic legacy of the temple is accessible to the modern digital congregant. We focused on honoring a century of spiritual tradition while pivoting toward a future-ready engagement model.", count: 17 },
+            { title: "Center for Youth Engagement", h: "Youth Empowerment", b: "A vibrant hub for leadership and social connection designed specifically for the next generation. Our challenge was to create a space that fosters growth and community.", count: 6 },
+            { title: "Preschools", h: "Early Discovery", b: "Nurturing digital gateways for families beginning their journey with WBT. The preschool identities focus on accessibility and warmth, providing a safe entry point.", count: 11 },
+            { title: "Elementary Schools", h: "Academic Excellence", b: "Comprehensive academic resources and community news for our student body. The digital framework supports complex hierarchies while remaining intuitive.", count: 21 },
+            { title: "Camps", h: "Adventure & Growth", b: "Capturing the spirit of summer through dynamic engagement platform. We utilized high-energy color palettes and kinetic pattern to reflect vitality.", count: 9 },
+            { title: "Social & Outreach", h: "Community Service", b: "Bridging our institution with local and global initiatives to foster meaningful impact. The system emphasizes clarity and transparency.", count: 8 }
         ];
 
         let currentActiveSection = -1;
@@ -705,16 +710,8 @@
             currentActiveSection = index;
             const shell = document.getElementById('app-shell');
             const pageBody = document.getElementById('page-body');
-            const isInitialOpen = !pageBody.classList.contains('app-state-active');
             
             pageBody.classList.add('app-state-active', 'modal-open');
-
-            if (isInitialOpen) {
-                const shellRect = shell.getBoundingClientRect();
-                const absoluteShellTop = window.pageYOffset + shellRect.top;
-                const targetY = absoluteShellTop - 64; 
-                window.scrollTo({ top: targetY, behavior: 'smooth' });
-            }
 
             const menuItems = document.querySelectorAll('.submenu-item');
             menuItems.forEach((item) => {
@@ -735,12 +732,6 @@
             document.getElementById('content-area').scrollTop = 0;
             
             document.getElementById('nav-container').classList.remove('header-hidden');
-        }
-
-        function navigateSection(direction) {
-            if (currentActiveSection === -1) return;
-            let nextIndex = (currentActiveSection + direction + sections.length) % sections.length;
-            openSection(nextIndex);
         }
 
         function resetView() {
